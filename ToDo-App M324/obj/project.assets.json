@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/noah.wyss/Downloads/ToDo-App M324/ToDo-App M324/ToDo-App M324.csproj",
+      "projectUniqueName": "/Users/noah.wyss/todo_m324/todo/ToDo-App M324/ToDo-App M324.csproj",
       "projectName": "ToDo-App M324",
-      "projectPath": "/Users/noah.wyss/Downloads/ToDo-App M324/ToDo-App M324/ToDo-App M324.csproj",
+      "projectPath": "/Users/noah.wyss/todo_m324/todo/ToDo-App M324/ToDo-App M324.csproj",
       "packagesPath": "/Users/noah.wyss/.nuget/packages/",
-      "outputPath": "/Users/noah.wyss/Downloads/ToDo-App M324/ToDo-App M324/obj/",
+      "outputPath": "/Users/noah.wyss/todo_m324/todo/ToDo-App M324/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/noah.wyss/.nuget/NuGet/NuGet.Config"
