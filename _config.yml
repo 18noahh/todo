@@ -1,3 +1,4 @@
 theme: jekyll-theme-minimal
 title: Modul 324 Konstantin und Noah
 description: test
+css: "/assets/css/custom.css"
