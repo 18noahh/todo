@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo-App M324", "ToDo-App M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{3E222E86-43E9-46CE-BD25-A7242C2479FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo-App M324 Windows Interface", "ToDo-App M324 Windows Interface\ToDo-App M324 Windows Interface.csproj", "{4857C98F-CC0C-4B30-8E35-03B3436BC18C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3E222E86-43E9-46CE-BD25-A7242C2479FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E222E86-43E9-46CE-BD25-A7242C2479FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E222E86-43E9-46CE-BD25-A7242C2479FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4857C98F-CC0C-4B30-8E35-03B3436BC18C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4857C98F-CC0C-4B30-8E35-03B3436BC18C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4857C98F-CC0C-4B30-8E35-03B3436BC18C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4857C98F-CC0C-4B30-8E35-03B3436BC18C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
