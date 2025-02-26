@@ -1,69 +1,48 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
+using CsvHelper;
+using System.Globalization;
 
 namespace ToDo_App_M324;
-
-public class TodoList
+public class TodoList(string filePath)
 {
-    private string _filePath = "todo_list.csv";
-    private List<string> _tasks = new List<string>();
-    
+    private List<Task> _tasks = new List<Task>();
+
     public void LoadTasks()
     {
-        if (File.Exists(_filePath))
+        if (File.Exists(filePath))
         {
-            _tasks = new List<string>(File.ReadAllLines(_filePath));
+            using var stream = new StreamReader(filePath);
+            using var reader = new CsvReader(stream, CultureInfo.InvariantCulture);
+            _tasks = reader.GetRecords<Task>().ToList();
         }
     }
-    
-    public List<string> GetTasks()
+
+    public List<Task> GetTasks()
     {
-        return new List<string>(_tasks);
+        return _tasks;
     }
 
     public void SaveTasks()
     {
-        File.WriteAllLines(_filePath, _tasks);
+        using var stream = new StreamWriter(filePath);
+        using var writer = new CsvWriter(stream, CultureInfo.InvariantCulture);
+        writer.WriteRecords(_tasks);
     }
 
-    public void AddTask(string task)
+    public void AddTask(Task task)
     {
-        if (!string.IsNullOrWhiteSpace(task))
+        if (!string.IsNullOrWhiteSpace(task.Name))
         {
             _tasks.Add(task);
             Console.WriteLine("Aufgabe hinzugefügt!");
         }
     }
 
-    public void RemoveTask( string taskNumber)
+    public void RemoveTask(Task task)
     {
-        ShowTasks();
-        Console.Write("Nummer der zu löschenden Aufgabe: ");
-        if (int.TryParse(taskNumber, out int index) && index > 0 && index <= _tasks.Count)
+        var index = _tasks.IndexOf(task);
+        if (index != -1)
         {
-            _tasks.RemoveAt(index - 1);
-            Console.WriteLine("Aufgabe entfernt!");
-        }
-        else
-        {
-            Console.WriteLine("Ungültige Eingabe!");
-        }
-    }
-
-    public void ShowTasks()
-    {
-        Console.WriteLine("\nAktuelle Aufgaben:");
-        if (_tasks.Count == 0)
-        {
-            Console.WriteLine("Keine Aufgaben vorhanden.");
-        }
-        else
-        {
-            for (int i = 0; i < _tasks.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {_tasks[i]}");
-            }
+            _tasks.RemoveAt(index);
         }
     }
 }
