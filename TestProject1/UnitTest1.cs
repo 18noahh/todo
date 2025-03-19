@@ -22,18 +22,21 @@ public class UnitTest1
     [TestMethod]
     public void AddTask_ShouldAddTaskToList()
     {
-        var newTask = new Task("Testaufgabe", false, Priority.Mittel);
+        var newTask = new Task(0, "Testaufgabe", "Beschreibung", false, Priority.Mittel);
         _todoList.AddTask(newTask);
         var tasks = _todoList.GetTasks();
 
         Assert.AreEqual(1, tasks.Count);
         Assert.AreEqual("Testaufgabe", tasks[0].Name);
+        Assert.AreEqual("Beschreibung", tasks[0].Description);
+        Assert.AreEqual(Priority.Mittel, tasks[0].Priority);
+        Assert.IsFalse(tasks[0].IsDone);
     }
 
     [TestMethod]
     public void RemoveTask_ShouldRemoveTaskFromList()
     {
-        var newTask = new Task("Testaufgabe", false, Priority.Mittel);
+        var newTask = new Task(0, "Testaufgabe", "Beschreibung", false, Priority.Mittel);
         _todoList.AddTask(newTask);
         _todoList.RemoveTask(newTask);
         var tasks = _todoList.GetTasks();
@@ -41,18 +44,18 @@ public class UnitTest1
         Assert.AreEqual(0, tasks.Count);
     }
 
-
     [TestMethod]
     public void SaveTasks_ShouldWriteToFile()
     {
-        var newTask = new Task("Testaufgabe", false, Priority.Mittel);
+        var newTask = new Task(0, "Testaufgabe", "Beschreibung", false, Priority.Mittel);
         _todoList.AddTask(newTask);
         _todoList.SaveTasks();
 
         Assert.IsTrue(File.Exists(_testFilePath));
         string[] lines = File.ReadAllLines(_testFilePath);
-        Assert.AreEqual(2, lines.Length);
-        Assert.AreEqual(true, lines[1].Contains("Testaufgabe"));
+        Assert.AreEqual(2, lines.Length); // Header + 1 Task
+        Assert.IsTrue(lines[1].Contains("Testaufgabe"));
+        Assert.IsTrue(lines[1].Contains("Beschreibung"));
     }
 
     [TestMethod]
@@ -61,10 +64,11 @@ public class UnitTest1
         using (var stream = new StreamWriter(_testFilePath))
         using (var writer = new CsvWriter(stream, CultureInfo.InvariantCulture))
         {
-            var newTask1 = new Task("Testaufgabe 1", false, Priority.Mittel);
-            var newTask2 = new Task("Testaufgabe 2", false, Priority.Mittel);
-
-            writer.WriteRecords([newTask1, newTask2]);
+            writer.WriteRecords(new[]
+            {
+                new Task(1, "Testaufgabe 1", "Beschreibung 1", false, Priority.Mittel),
+                new Task(2, "Testaufgabe 2", "Beschreibung 2", true, Priority.Hoch)
+            });
         }
 
         _todoList.LoadTasks();
@@ -72,7 +76,14 @@ public class UnitTest1
 
         Assert.AreEqual(2, tasks.Count);
         Assert.AreEqual("Testaufgabe 1", tasks[0].Name);
+        Assert.AreEqual("Beschreibung 1", tasks[0].Description);
+        Assert.IsFalse(tasks[0].IsDone);
+        Assert.AreEqual(Priority.Mittel, tasks[0].Priority);
+
         Assert.AreEqual("Testaufgabe 2", tasks[1].Name);
+        Assert.AreEqual("Beschreibung 2", tasks[1].Description);
+        Assert.IsTrue(tasks[1].IsDone);
+        Assert.AreEqual(Priority.Hoch, tasks[1].Priority);
     }
 
     [TestCleanup]
