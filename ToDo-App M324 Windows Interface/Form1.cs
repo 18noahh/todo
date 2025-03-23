@@ -6,8 +6,6 @@ namespace TODO_App;
 public partial class Form1 : Form
 {
     private const string filePath = "todo_list.csv";
-
-
     private static readonly TodoList tasks = new TodoList(filePath);
 
     public Form1()
@@ -23,14 +21,13 @@ public partial class Form1 : Form
         UpdateTaskList();
     }
 
-
     private void UpdateTaskList()
     {
         lstTasks.Items.Clear();
         foreach (var task in tasks.GetTasks())
         {
             string status = task.IsDone ? "[Erledigt]" : "[Offen]";
-            lstTasks.Items.Add($"{task.Name} {status} (Priorit‰t: {task.Priority})");
+            lstTasks.Items.Add($"{task.Name} {status} (Priorit√§t: {task.Priority})");
         }
     }
 
@@ -40,15 +37,16 @@ public partial class Form1 : Form
         if (!string.IsNullOrWhiteSpace(taskName))
         {
             var priority = Enum.Parse<Priority>(cmbPriority.SelectedItem!.ToString()!);
-            tasks.AddTask(new Task(taskName, false, priority));
+            var nextId = tasks.GetTasks().Any() ? tasks.GetTasks().Max(t => t.Id) + 1 : 1;
+            tasks.AddTask(new Task(nextId, taskName, null, false, priority));
             tasks.SaveTasks();
             UpdateTaskList();
             txtTask.Clear();
-            lblStatus.Text = "Aufgabe hinzugef¸gt!";
+            lblStatus.Text = "Aufgabe hinzugef√ºgt!";
         }
         else
         {
-            lblStatus.Text = "Bitte eine g¸ltige Aufgabe eingeben!";
+            lblStatus.Text = "Bitte eine g√ºltige Aufgabe eingeben!";
         }
     }
 
@@ -65,7 +63,7 @@ public partial class Form1 : Form
         }
         else
         {
-            lblStatus.Text = "Bitte eine Aufgabe ausw‰hlen!";
+            lblStatus.Text = "Bitte eine Aufgabe ausw√§hlen!";
         }
     }
 
@@ -80,9 +78,7 @@ public partial class Form1 : Form
         }
         else
         {
-            lblStatus.Text = "Bitte eine Aufgabe ausw‰hlen!";
+            lblStatus.Text = "Bitte eine Aufgabe ausw√§hlen!";
         }
     }
-
 }
-
