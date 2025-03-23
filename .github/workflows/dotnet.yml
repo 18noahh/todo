@@ -12,17 +12,51 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET 9.0
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
+
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
+
+    - name: Build Solution
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Test All Projects
       run: dotnet test --no-build --verbosity normal
+
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 9.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Build Docker Image
+      run: |
+        docker build -t webapi:latest -f WebApi/Dockerfile .
+
+    - name: Run Docker Container
+      run: |
+        docker run -d -p 8080:8080 --name webapi-container webapi:latest
+
+    - name: Check API Health
+      run: |
+        sleep 5
+        curl --retry 5 --retry-delay 5 --retry-all-errors -f http://localhost:8080/api/todos || exit 1
+
+    - name: Stop Docker Container
+      run: |
+        docker stop webapi-container
