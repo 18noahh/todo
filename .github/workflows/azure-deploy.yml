@@ -1,0 +1,31 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t my-todo-app:latest .
+        docker tag my-todo-app:latest mydockerhubusername/my-todo-app:latest
+        docker push mydockerhubusername/my-todo-app:latest
+
+    - name: Deploy to Azure
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'M324-ToDo-App'
+        images: 'mydockerhubusername/my-todo-app:latest'
