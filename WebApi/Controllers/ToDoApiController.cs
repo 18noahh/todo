@@ -6,11 +6,11 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/todos")]
-    public class WeatherForecastController : ControllerBase
+    public class ToDoApiController : ControllerBase
     {
         private readonly TodoList _todoList;
 
-        public WeatherForecastController(TodoList todoList)
+        public ToDoApiController(TodoList todoList)
         {
             _todoList = todoList;
             _todoList.LoadTasks();
